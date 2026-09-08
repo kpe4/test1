@@ -22,4 +22,4 @@ info = (
     + str(uuid.getnode())
 )
 system_id = hashlib.sha256(info.encode()).hexdigest()
-print("System ID:", system_id)
+print("ID системы:", system_id)
