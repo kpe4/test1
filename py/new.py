@@ -1,5 +1,7 @@
-# код полчучает данные о компонентах пк, времени. Выводит название системы, версию, архитектуру, дату.
-# Генерирует уникальный айди ситемы из названия системы, названия пк, архитектуры и сетевого идентификатора
+# Код получает данные о компонентах ПК, времени.
+# Выводит название системы, версию, архитектуру, дату.
+# Генерирует уникальный ID системы из названия системы,
+# названия ПК, архитектуры и сетевого идентификатора.
 
 import os
 import sys
@@ -8,25 +10,34 @@ import datetime
 import hashlib
 import uuid
 
-os_architecture = platform.architecture()[0]
-current_folder = os.getcwd()
-python_paths = sys.path
-os_name = platform.system()
-os_version = platform.version()
-os_arch = platform.architecture()[0]
 
-now = datetime.datetime.now()
-print("Архитектура:", os_architecture)
-print("Текущая папка:", current_folder)
-print("Пути Python:", python_paths)
-sys_in = sys.path
-print(f"{os_name} {os_version} {os_arch} \n {now.year} {now.month} {now.day} {now.hour}:{now.minute}")
+os_architecture = platform.architecture()[0]  #Получаем архитектуру системы
+current_folder = os.getcwd()                 #Получаем текущую папку
+python_paths = sys.path                      #Получаем пути поиска модулей Python
+os_name = platform.system()                  #Получаем название операционной системы
+os_version = platform.version()              #Получаем версию операционной системы
+os_arch = platform.architecture()[0]         #Получаем архитектуру системы
+
+
+now = datetime.datetime.now()  #Получаем текущую дату и время
+
+print("Архитектура:", os_architecture)       #Выводим архитектуру
+print("Текущая папка:", current_folder)      #Выводим текущую папку
+print("Пути Python:", python_paths)          #Выводим пути Python
+
+print(
+    f"{os_name} {os_version} {os_arch} \n"
+    f"{now.year} {now.month} {now.day} {now.hour}:{now.minute}"
+)  #Выводим информацию о системе, дату и время
+
 
 info = (
-    platform.node()
-    + platform.system()
-    + platform.machine()
-    + str(uuid.getnode())
+    platform.node()          #Получаем имя компьютера
+    + platform.system()      #Получаем название операционной системы
+    + platform.machine()     #Получаем тип процессора
+    + str(uuid.getnode())    #Получаем сетевой идентификатор
 )
-system_id = hashlib.sha256(info.encode()).hexdigest()
-print("ID системы:", system_id)
+
+system_id = hashlib.sha256(info.encode()).hexdigest()  #Создаём уникальный хеш айди системы
+
+print("ID системы:", system_id)  #Выводим айди системы
