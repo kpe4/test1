@@ -2,67 +2,41 @@
 ver 0.0.2
 """
 
+is_running = True
 collection = []
-
-is_start = True
-
-while is_start:
-    print("\n1-Показать задачи")
-    print("2-Добавить задачу")
-    print("3-Изменить задачу")
-    print("4-Удалить задачу")
-    print("0-Выход")
-
-    choice_user = input("Введите ваш выбор: ")
-
-    if choice_user == "1":
-        if len(collection) == 0:
-            print("ЗАдач нет")
-        else:
-            print("\n⭣ Ваши задачи ⭣")
-            for i in range(len(collection)):
-                print(i + 1, "-", collection[i])
-            print(" - Вот и все -")
-
-    elif choice_user == "2":
-        task = input("Введите название задачи: ")
-        collection.append(task)
-        print("Задача добавлена")
-
-    elif choice_user == "3":
-        if len(collection) == 0:
-            print("Список задач пуст")
-        else:
-            for i in range(len(collection)):
-                print(i + 1, "-", collection[i])
-
-            number = int(input("Введите номер задачи: "))
-
-            if number >= 1 and number <= len(collection):
-                new_task = input("Введите новое название: ")
-                collection[number - 1] = new_task
-                print("Задача изменена")
+def show_collection(collection):
+    print('='* 30)
+    for i, j in enumerate(collection):
+        print(f"{i + 1}. {j}")
+    print("=" * 30)
+while is_running:
+    print("1-посмотреть задачу. \n2-добавить задачу \n3-редактировать задачу \n4-удалить \n5-выход")
+    clause_user = input("введите свой выбор")
+    match str(clause_user):
+        case '1':
+            show_collection(collection)
+        case '2':
+            task_name = input("введите название задачи")
+            collection.append(task_name)
+        case '3':
+            show_collection(collection)
+            select_edit = int(input("введите номер задачи"))
+            if type(select_edit) != str and int(select_edit) > 0 and select_edit <= len(collection) and type(select_edit) == int:
+                edit_name = input("новое имя задачи: ")
+                collection[select_edit - 1] = edit_name
+                print(f"задча '{select_edit}' '{edit_name}' успешно отредактрирована!")
             else:
-                print("Такой задачи нет")
-
-    elif choice_user == "4":
-        if len(collection) == 0:
-            print("Список задач пуст")
-        else:
-            for i in range(len(collection)):
-                print(i + 1, "-", collection[i])
-
-            number = int(input("Введите номер задачи: "))
-
-            if number >= 1 and number <= len(collection):
-                collection.pop(number - 1)
-                print("Задача удалена")
+                print("задачи с таким номером нет")
+        case '4':
+            show_collection(collection)
+            delete_edit = int(input("Введите новый задачи для удаления"))
+            if int(delete_edit) > 0 and delete_edit <= len(collection):
+                collection.pop(delete_edit - 1)
+                print(f"задача '{delete_edit}' успешно удалена")
             else:
-                print("Такой здачи нет")
-
-    elif choice_user == "0":
-        print("Всё, конец")
-        is_start = False
-
-    else:
-        print("Такого пункта нет")
+                print("задачи с таким номером нет")
+        case '5':
+            is_running = False
+            print('Пока')
+        case _:
+            print('Нет задач')
