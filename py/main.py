@@ -1,14 +1,15 @@
 """Основной файл приложения
 
     версия 0.0.7
+
+    === Описание ===
         Приложение может сохранять задачи, выдаёт список задач,
         может удалять и редактировать задачи.
         Реализованы функции edited_task и deleted_task,
-        цикл while в main, загрузка/сохранение в файл saves.txt
+        цикл while в main, загрузка/сохранение в файл saves.txt.
 """
 
 import os
-import processes
 
 FILE_NAME = "saves.txt"
 collection = []
@@ -68,7 +69,7 @@ def add_task(task_collection):
         print("Название не может быть пустым!")
         return
     task_collection.append(task_name)
-    processes.show_message("Задача добавлена")
+    print("Задача добавлена")
 
 
 def edited_task(task_collection):
@@ -89,7 +90,7 @@ def edited_task(task_collection):
         task_collection[int(selected_task) - 1] = new_task
 
         print(f"Задача с номером {selected_task} успешно изменена")
-        processes.show_message("Задача изменена")
+        print("Задача изменена")
 
 
 def deleted_task(task_collection):
@@ -103,22 +104,22 @@ def deleted_task(task_collection):
     if check_confirm(delete_tasks, task_collection):
         task_collection.pop(int(delete_tasks) - 1)
         print(f"Задача с номером {delete_tasks} успешно удалена")
-        processes.show_message("Задача удалена")
+        print("Задача удалена")
 
 
 def show_tasks(task_collection):
     show_collection(task_collection)
-    processes.show_message("Список задач показан")
+    print("Список задач показан")
 
 
 def exit_program():
     global is_running
     is_running = False
-    processes.show_message("До свидания!")
+    print("До свидания!")
 
 
 def unknown_command():
-    processes.show_message("Такого пункта нет")
+    print("Такого пункта нет...")
 
 
 def main():
