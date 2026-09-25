@@ -1,24 +1,44 @@
 """Основной файл приложения
 
-    версия 0.0.5
-
-    === Описание ===
+    версия 0.0.7
         Приложение может сохранять задачи, выдаёт список задач,
         может удалять и редактировать задачи.
+        Реализованы функции edited_task и deleted_task,
+        цикл while в main, загрузка/сохранение в файл saves.txt
 """
 
+import os
 import processes
 
-collection = ['task1', 'task2']  # список задач
+FILE_NAME = "saves.txt"
+collection = []
 is_running = True
 
 
-def show_collection():
+def load_tasks(file_name=FILE_NAME):
+    if not os.path.exists(file_name):
+        return []
+    with open(file_name, "r", encoding="utf-8") as f:
+        tasks = [line.strip() for line in f.readlines() if line.strip()]
+    return tasks
+
+
+def save_tasks(task_collection, file_name=FILE_NAME):
+    with open(file_name, "w", encoding="utf-8") as f:
+        for task in task_collection:
+            f.write(task + "\n")
+
+
+def show_collection(task_collection=collection):
+    if not task_collection:
+        print("=" * 45)
+        print("Список задач пуст.")
+        print("=" * 45)
+        return
+
     print("=" * 45)
-
-    for i, task in enumerate(collection):
-        print(i + 1, task)
-
+    for i, task in enumerate(task_collection, 1):
+        print(f"  {i}. {task}")
     print("=" * 45)
 
 
@@ -41,6 +61,7 @@ def check_confirm(select_task, task_list):
         print("Введите именно номер задачи")
         return False
 
+
 def add_task(task_collection):
     task_name = input("Введите имя задачи для добавления: ")
     if len(task_name) < 2:
@@ -49,15 +70,13 @@ def add_task(task_collection):
     task_collection.append(task_name)
     processes.show_message("Задача добавлена")
 
-def delete_task(task_collection):
-    delete_tasks = input("Введите номер задачи для удаления: ")
 
-    if check_confirm(delete_tasks, task_collection):
-        task_collection.pop(int(delete_tasks) - 1)
-        print(f"Задача с номером {delete_tasks} успешно удалена")
-        processes.show_message("Задача удалена")
+def edited_task(task_collection):
+    show_collection(task_collection)
 
-def edit_task(task_collection):
+    if not task_collection:
+        return
+
     selected_task = input("Введите номер задачи: ")
 
     if check_confirm(selected_task, task_collection):
@@ -72,28 +91,44 @@ def edit_task(task_collection):
         print(f"Задача с номером {selected_task} успешно изменена")
         processes.show_message("Задача изменена")
 
+
+def deleted_task(task_collection):
+    show_collection(task_collection)
+
+    if not task_collection:
+        return
+
+    delete_tasks = input("Введите номер задачи для удаления: ")
+
+    if check_confirm(delete_tasks, task_collection):
+        task_collection.pop(int(delete_tasks) - 1)
+        print(f"Задача с номером {delete_tasks} успешно удалена")
+        processes.show_message("Задача удалена")
+
+
 def show_tasks(task_collection):
-    show_collection()
+    show_collection(task_collection)
     processes.show_message("Список задач показан")
+
 
 def exit_program():
     global is_running
-
     is_running = False
     processes.show_message("До свидания!")
 
+
 def unknown_command():
-    processes.show_message("Такого пункта нет...")
+    processes.show_message("Такого пункта нет")
+
 
 def main():
-    global is_running
+    global is_running, collection
+
+    collection = load_tasks()
+
     while is_running:
         show_menu()
         choice_user = input("Введите ваш выбор: ")
-
-        name_file = 'saves.txt'
-        file = open(name_file, 'w', encoding='utf-8')
-        for line in:
 
         match choice_user:
             case "1":
@@ -101,18 +136,18 @@ def main():
 
             case "2":
                 add_task(collection)
-                name_file = 'saves.txt'
-                file = open(name_file, 'w', encoding='utf-8')
-                file.write(task.join('\n'))
+                save_tasks(collection)
+
             case "3":
-                show_collection(collection)
-                edit_task(collection)
+                edited_task(collection)
+                save_tasks(collection)
 
             case "4":
-                show_collection(collection)
-                delete_task(collection)
+                deleted_task(collection)
+                save_tasks(collection)
 
             case "5":
+                save_tasks(collection)
                 exit_program()
 
             case _:
