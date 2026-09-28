@@ -1,53 +1,15 @@
 """Основной файл приложения
 
-    версия 0.0.8
+    версия 0.0.9
 
         Приложение может сохранять задачи, выдаёт список задач,
         может добавлять, удалять и редактировать задачи.
         У каждой задачи может быть описание
 """
-import os
-
-FILE_NAME = "saves.txt"
+import storage
+from storage import load_tasks
+from storage import save_tasks
 is_running = True
-
-
-def load_tasks(file_name=FILE_NAME):
-    if not os.path.exists(file_name):
-        return []
-
-    tasks = []
-
-    with open(file_name, "r", encoding="utf-8") as f:
-        for line in f:
-            line = line.strip()
-
-            if not line:
-                continue
-
-            # Новый формат: название|описание
-            if "|" in line:
-                name, description = line.split("|", 1)
-            else:
-                # Поддержка старых задач без описания
-                name = line
-                description = ""
-
-            tasks.append({
-                "name": name,
-                "description": description
-            })
-
-    return tasks
-
-
-def save_tasks(task_collection, file_name=FILE_NAME):
-    with open(file_name, "w", encoding="utf-8") as f:
-        for task in task_collection:
-            f.write(
-                f"{task['name']}|{task['description']}\n"
-            )
-
 
 def show_collection(task_collection):
     if not task_collection:
@@ -87,52 +49,6 @@ def check_confirm(select_task, task_list):
         print("Введите именно номер задачи")
         return False
 
-
-def add_task(task_collection):
-    task_name = input("Введите имя задачи для добавления: ").strip()
-
-    if len(task_name) < 2:
-        print("Название не может быть пустым!")
-        return
-
-    # Сначала добавляем название
-    task_collection.append({
-        "name": task_name,
-        "description": ""
-    })
-
-    # Сразу после добавления спрашиваем описание
-    description = input(
-        "Введите описание задачи (Enter — без описания): "
-    ).strip()
-
-    task_collection[-1]["description"] = description
-
-    print("Задача добавлена")
-
-
-def edited_task(task_collection):
-    show_collection(task_collection)
-
-    if not task_collection:
-        return
-
-    selected_task = input("Введите номер задачи: ")
-
-    if check_confirm(selected_task, task_collection):
-        new_task = input("Введите новое имя задачи: ").strip()
-
-        if len(new_task) < 2:
-            print("Название не может быть пустым!")
-            return
-
-        task_collection[int(selected_task) - 1]["name"] = new_task
-
-        print(
-            f"Задача с номером {selected_task} успешно изменена"
-        )
-
-
 def edit_description(task_collection):
     show_collection(task_collection)
 
@@ -168,25 +84,6 @@ def edit_description(task_collection):
                 f"Описание задачи с номером {selected_task} удалено"
             )
 
-
-def deleted_task(task_collection):
-    show_collection(task_collection)
-
-    if not task_collection:
-        return
-
-    delete_task = input(
-        "Введите номер задачи для удаления: "
-    )
-
-    if check_confirm(delete_task, task_collection):
-        task_collection.pop(int(delete_task) - 1)
-
-        print(
-            f"Задача с номером {delete_task} успешно удалена"
-        )
-
-
 def show_tasks(task_collection):
     show_collection(task_collection)
     print("Список задач показан")
@@ -207,7 +104,7 @@ def unknown_command():
 def main():
     global is_running
 
-    collection = load_tasks()
+    collection = storage.load_tasks()
 
     while is_running:
         show_menu()
