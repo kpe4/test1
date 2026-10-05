@@ -3,68 +3,54 @@
 
                                     === Версия приложения: 0.0.9 ===
 """
-from
+
 from utils import check_confirm
 
 ### Удаление задач
-def deleted_task(task_collection):
-    show_collection(task_collection)
-
-    if not task_collection:
-        return
-
-    delete_task = input(
-        "Введите номер задачи для удаления: "
-    )
+def delete_tasks(task_collection):
+    delete_task = input("Введите номер задачи: ")
 
     if check_confirm(delete_task, task_collection):
         task_collection.pop(int(delete_task) - 1)
-
-        print(
-            f"Задача с номером {delete_task} успешно удалена"
-        )
+        print(f"Задача {delete_task} удалена!")
+    else:
+        print("Неверный номер задачи!")
 
 ### Редактирование задач
-def edited_task(task_collection):
-    show_collection(task_collection)
+def edit_task(task_collection):
+    edit_task_number = input("Введите номер задачи: ")
 
-    if not task_collection:
-        return
+    if check_confirm(edit_task_number, task_collection):
+        edit_name = input("Новое имя задачи: ").strip()
+        edit_content = input("Новое содержимое задачи: ").strip()
 
-    selected_task = input("Введите номер задачи: ")
-
-    if check_confirm(selected_task, task_collection):
-        new_task = input("Введите новое имя задачи: ").strip()
-
-        if len(new_task) < 2:
-            print("Название не может быть пустым!")
+        if not edit_name:
+            print("Название задачи не может быть пустым!")
             return
 
-        task_collection[int(selected_task) - 1]["name"] = new_task
+        if not edit_content:
+            print("Содержимое задачи не может быть пустым!")
+            return
 
-        print(
-            f"Задача с номером {selected_task} успешно изменена"
+        task_collection[int(edit_task_number) - 1] = (
+            f"{edit_name} | {edit_content}\n"
         )
+
+        print(f"Задача «{edit_name}» успешно изменена!")
 
 ### Добавление задач
 def add_task(task_collection):
-    task_name = input("Введите имя задачи для добавления: ").strip()
+    task_name = input("Введите имя задачи: ").strip()
+    task_content = input("Введите содержимое задачи: ").strip()
 
-    if len(task_name) < 2:
-        print("Название не может быть пустым!")
+    if not task_name:
+        print("Имя задачи не может быть пустым!")
         return
 
-    # Сначала добавляем название
-    task_collection.append({
-        "name": task_name,
-        "description": ""
-    })
+    if not task_content:
+        print("Содержимое задачи не может быть пустым!")
+        return
 
-    # Сразу после добавления спрашиваем описание
-    description = input(
-        "Введите описание задачи (Enter — без описания): "
-    ).strip()
-
-    task_collection[-1]["description"] = description
-
-    print("Задача добавлена")
+    full_task = f"{task_name} | {task_content}"
+    task_collection.append(full_task + "\n")
+    print(f"Задача «{task_name}» успешно добавлена!")

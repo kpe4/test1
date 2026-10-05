@@ -1,144 +1,53 @@
-"""Основной файл приложения
-
-    версия 0.0.9
-
-        Приложение может сохранять задачи, выдаёт список задач,
-        может добавлять, удалять и редактировать задачи.
-        У каждой задачи может быть описание
 """
-import storage
-from storage import load_tasks
-from storage import save_tasks
-is_running = True
+                                    === Основной файл приложения ===
 
-def show_collection(task_collection):
-    if not task_collection:
-        print("=" * 45)
-        print("Список задач пуст.")
-        print("=" * 45)
-        return
+## V 0.0.1
 
-    print("=" * 45)
+    создать проект на git hub
+    создать файл основного приложения
+    создать основной цикл
 
-    for i, task in enumerate(task_collection, 1):
-        print(f"  {i}. {task['name']}")
+## V 0.0.2
 
-        if task["description"]:
-            print(f"     Описание: {task['description']}")
+    реализовать место хранения задач
+    создать функцию показа заметок
+    создать функцию добавления заметок
 
-    print("=" * 45)
+## V 0.0.3
 
+    реализовать сохранение задач
+    реализовать вывод списка задач
+    реализовать редактирование и удаление задач
 
-def show_menu():
-    print("1 - Показать задачи")
-    print("2 - Добавить задачу")
-    print("3 - Редактировать задачу")
-    print("4 - Удалить задачу")
-    print("5 - Выход")
-    print("6 - Изменить описание задачи")
+## V 0.0.4
 
+    добавлены проверки и подтверждения
 
-def check_confirm(select_task, task_list):
-    if select_task.isdigit():
-        if 0 < int(select_task) <= len(task_list):
-            return True
-        else:
-            print(f"Задачи с номером {select_task} нет в списке")
-            return False
-    else:
-        print("Введите именно номер задачи")
-        return False
+## V 0.0.5
 
-def edit_description(task_collection):
-    show_collection(task_collection)
+    созданы методы сохранения и загрузки - файлы сохранение
 
-    if not task_collection:
-        return
+## V 0.0.6
 
-    selected_task = input(
-        "Введите номер задачи для изменения описания: "
-    )
+    созданы методы для удаления, редактирования и создания задач - логика вынесена из цикла
 
-    if check_confirm(selected_task, task_collection):
-        task_index = int(selected_task) - 1
+## V 0.0.7
 
-        old_description = task_collection[task_index]["description"]
+    основной цикл помещен в отдельный метод - def main
 
-        if old_description:
-            print(f"Текущее описание: {old_description}")
-        else:
-            print("У задачи сейчас нет описания.")
+## V 0.0.8
 
-        new_description = input(
-            "Введите новое описание (Enter — удалить описание): "
-        ).strip()
+    реализован функционал добавления контента задачи - имя + содержания
 
-        task_collection[task_index]["description"] = new_description
+## V 0.0.9
 
-        if new_description:
-            print(
-                f"Описание задачи с номером {selected_task} изменено"
-            )
-        else:
-            print(
-                f"Описание задачи с номером {selected_task} удалено"
-            )
+    реализован переход на модульную систему
 
-def show_tasks(task_collection):
-    show_collection(task_collection)
-    print("Список задач показан")
+## v 0.1.0
 
-
-def exit_program():
-    global is_running
-
-    is_running = False
-
-    print("До свидания!")
-
-
-def unknown_command():
-    print("Такого пункта нет...")
-
-
-def main():
-    global is_running
-
-    collection = storage.load_tasks()
-
-    while is_running:
-        show_menu()
-
-        choice_user = input("Введите ваш выбор: ")
-
-        match choice_user:
-
-            case "1":
-                show_tasks(collection)
-
-            case "2":
-                add_task(collection)
-                save_tasks(collection)
-
-            case "3":
-                edited_task(collection)
-                save_tasks(collection)
-
-            case "4":
-                deleted_task(collection)
-                save_tasks(collection)
-
-            case "5":
-                save_tasks(collection)
-                exit_program()
-
-            case "6":
-                edit_description(collection)
-                save_tasks(collection)
-
-            case _:
-                unknown_command()
-
+    Подготовка к сборке приложения
+"""
+import app
 
 if __name__ == "__main__":
-    main()
+    app.app()
