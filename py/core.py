@@ -6,7 +6,7 @@
 
 from utils import check_confirm
 
-### Удаление задач
+
 def delete_tasks(task_collection):
     delete_task = input("Введите номер задачи: ")
 
@@ -16,7 +16,7 @@ def delete_tasks(task_collection):
     else:
         print("Неверный номер задачи!")
 
-### Редактирование задач
+
 def edit_task(task_collection):
     edit_task_number = input("Введите номер задачи: ")
 
@@ -38,7 +38,7 @@ def edit_task(task_collection):
 
         print(f"Задача «{edit_name}» успешно изменена!")
 
-### Добавление задач
+
 def add_task(task_collection):
     task_name = input("Введите имя задачи: ").strip()
     task_content = input("Введите содержимое задачи: ").strip()

@@ -4,7 +4,7 @@
                                     === Версия приложения: 0.0.9 ===
 """
 
-### Показ списка задач
+
 def show_collection(task_collection):
     print("=" * 45)
     if not task_collection:
@@ -21,7 +21,7 @@ def show_collection(task_collection):
             print(f"   Содержание: {task_content}")
     print("=" * 45)
 
-### Показ меню приложения
+
 def show_menu():
     print("1 - Показать задачи")
     print("2 - Добавить задачу")

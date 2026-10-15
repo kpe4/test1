@@ -19,13 +19,22 @@ def check_confirm(select_task, task_list):
         print("Введите именно номер задачи!")
         return False
 
-def get_base_din():
-    if getattr(sys, 'frozen', False):
-        return os.path.dirname(sys.executable)
-    else:
-        return os.path.dirname(os.path.realpath(__file__))
-
 def insure_saves_file(name_file):
     if not os.path.exists(name_file):
         with open(name_file, 'w', encoding="utf-8"):
+            pass
+
+def get_base_dir():
+    if getattr(sys, 'frozen', False):
+        base_dir = os.path.dirname(sys.executable)
+    else:
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+    return base_dir
+
+def insure_save_file():
+    base_dir = get_base_dir()
+    file_path = os.path.join(base_dir, "saves.txt") 
+    
+    if not os.path.exists(file_path):
+        with open(file_path, "w", encoding="utf-8") as f:
             pass

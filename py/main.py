@@ -48,6 +48,8 @@
     Подготовка к сборке приложения
 """
 import app
+from utils import insure_save_file 
 
 if __name__ == "__main__":
     app.app()
+    insure_save_file()
